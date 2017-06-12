@@ -1,0 +1,62 @@
+---
+title: "期末報告：長照知多少？"
+author: "b02302112 政治四 黃馨儀、r05741051 商研一 黃羽均"
+date: "2017/6/12"
+output: html_document
+---
+###高齡化來襲，各縣市政府準備好了嗎？
+
+	因應超高齡化的社會議題，衛生福利部推出了長期照護十年計劃。政府訂立了一系列規章及輔助辦法等以協助高齡國民的生活。在這個架構當中，地方縣市政府的配合是不可或缺的一環。中央訂立規則並在預算上給予協助，但長照十年計劃的第一線仍是各縣市政府。
+	面對高齡化的壓力，各縣市政府是不是準備好了呢？現有的照護資源是否能足夠支持各縣市的高齡照護？本文就各縣市人口高齡化的程度對安養機構床數缺口及照護人力來做分析。
+	
+###哪個縣市的老年人口比率是TOP3？
+
+	下圖為台灣各縣市高齡化程度及照護資源分配的視覺化圖表。每個點代表所在位置之縣市，點的大小則和高齡化程度呈正相關，圖上的「點越大，代表高齡化的議題越加嚴峻」，需要地方政府投注更多心力。圖中最大的三個點：嘉義縣、雲林縣及南投縣。
+	
+```{r, message=FALSE, warning=FALSE}
+library(ggmap)
+
+data<-read.csv("4.csv",encoding = "big-5")
+data$lon <- data$WGS84Lon
+data$lat <- data$WGS84Lat
+
+map <- get_map(location = 'Taiwan', zoom = 8)
+ggmap(map) + geom_point(aes(x = lon, y = lat, col = sd, size = ratio),colour = "darkgreen", data = data) + scale_size(range = c(-8,11))
+```
+
+###長照床數明顯不足
+
+    點的深淺代表各縣市照護機構的空床數多寡。空床數是由該縣市各照護機構所能容納的人數減去其失能長者人數而得。配合旁列圖例可以看出各縣市長照病床的缺口。「顏色越深缺口越大。」
+	  前述高齡化縣市雲林及嘉義的空床數量都不樂觀。且值得一提的是，照護病床缺額最高的地區是台北市，高雄市次之，顯示都市地區之高齡長照議題也不容小覷。
+	
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(ggmap)
+library(mapproj)
+
+data<-read.csv("4.csv",encoding = "big-5")
+data$lon <- data$WGS84Lon
+data$lat <- data$WGS84Lat
+
+map <- get_map(location = 'Taiwan', zoom = 8)
+ggmap(map) + geom_point(aes(x = lon, y = lat, col = sd, size = ratio),
+             data = data) + labs(col = "No. of Available Beds") + scale_size(range = c(-6,11)) + scale_colour_gradient(high = "red")
+             
+```
+
+###照護人力明顯不足且分配不均
+    
+    點的深淺代表每個照服員照護的人數（以總床數計）。高齡化嚴重的雲林縣在照護人力上相對充足（顏色較淺）。照護人力缺口最大的地區為交通相對困難的離島澎湖及山地南投。
+
+```{r, message=FALSE, warning=FALSE}
+ggmap(map) + 
+  geom_point(aes(x = lon, y = lat, colour = 照服員照護人數, size = ratio),
+             data = data) + scale_size(range = c(-6,11)) + scale_colour_gradient(low = "yellow", high = "red")+ labs(col = "No. of people to take care of")
+```
+
+
+#結論：這裡怪怪的～～～內容要改！
+    失能老年人口數和床數的資源差異——相較之下，長照床數明顯不足。也就是說在床數不足的情況下，照護人員卻沒有因為資本的不足而做出適當的反應（點越大應該要越淺），也就是增加人力資源去遞補，因此不管是在機構還是人員方面都是呈現資源短缺的狀態。
+    長照服務的資源嚴重不足，而且分佈的不均，其次人力有待充實。政府的政策方面，照護人員雖然已經開班，但未來可能沒有辦法滿足真正有需要的人的需求，另外產業參與跟長照服務沒有辦法做出適切的搭配，可以說無法照顧到偏遠的部落，最重要的整個資源沒有辦法整合。
+    
+	
