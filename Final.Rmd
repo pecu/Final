@@ -21,7 +21,7 @@ output: html_document
 
     下圖為台灣各縣市高齡化程度及照護資源分配的視覺化圖表。每個點代表所在位置之縣市，點的大小則和高齡化程度呈正相關，圖上的「點越大，代表高齡化的議題越加嚴峻」，需要地方政府投注更多心力。圖中最大的三個點：嘉義縣、雲林縣及南投縣。
 	
-```{r, message=FALSE, warning=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 library(ggmap)
 
 data<-read.csv("4.csv",encoding = "big-5")
